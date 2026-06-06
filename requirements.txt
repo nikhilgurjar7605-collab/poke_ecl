@@ -1,0 +1,4 @@
+https://github.com/KurimuzonAkuma/kurigram/archive/dev.zip
+tgcrypto
+git+https://github.com/Zrekryu/pyrolistener.git
+apscheduler
