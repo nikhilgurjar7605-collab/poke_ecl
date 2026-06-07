@@ -72,7 +72,10 @@ class TextChecker:
                 if max_hp/2 >= min_hp:
                     await self._click_button(2,2)
                 else:
-                    await self._click_button(ra_1, ra_2)
+                    if random.randint(0,100) > 50:
+                        await self._click_button(ra_1, ra_2)
+                    else:
+                        await self._click_button(2,2)
 
         elif self.text.endswith("Exp."):
             users_data["total_hunts"] += 1
