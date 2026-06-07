@@ -11,10 +11,11 @@ async def hunt_handler(c: Client, m: Message):
     command = m.command[0].lower()
     user_id = m.from_user.id
 
-    if c.me is None:
-        await c.get_me()
-    if c.me.id != user_id:
+    _user = await c.get_me()
+
+    if _user.id != user_id:
         return
+
 
     if command == "start":
         if user_id in active_tasks and active_tasks[user_id].is_running:

@@ -11,11 +11,11 @@ _me_cache: dict = {}
 async def check_handler(c: Client, m: Message):
     user_id = m.from_user.id
 
-    if c.me is None:
-        await c.get_me()
-    if c.me.id != user_id:
-        return
+    _user = await c.get_me()
 
+    if _user.id != user_id:
+        return
+    
     await m.reply(
         f"PokéDollars: {users_data['poke_dollars']}\n"
         f"Hunts: {users_data['total_hunts']}"

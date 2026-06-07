@@ -11,6 +11,8 @@ users_data: dict = {
     "in_loop": False
 }
 
+active_tasks: dict = {}
+
 
 class CreateTask:
     def __init__(self, user_id: int, c: Client):
@@ -26,10 +28,6 @@ class CreateTask:
     def start(self) -> bool:
         if self.scheduler.running:
             return False
-        
-        if users_data["in_loop"] == "True":
-            return
-
         self.scheduler.add_job(
             self._send_msg,
             "interval",
@@ -42,7 +40,6 @@ class CreateTask:
     def stop(self) -> bool:
         if not self.scheduler.running:
             return False
-
         self.scheduler.shutdown(wait=False)
         self.scheduler = AsyncIOScheduler()
         return True
@@ -50,8 +47,6 @@ class CreateTask:
     @property
     def is_running(self) -> bool:
         return self.scheduler.running
-
-active_tasks: dict[int, CreateTask] = {}
 
 
 __all__ = ["CreateTask", "users_data", "active_tasks"]
