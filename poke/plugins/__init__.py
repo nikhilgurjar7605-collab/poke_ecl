@@ -1,4 +1,6 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import asyncio
+import random
 
 from pyrogram import Client
 
@@ -11,18 +13,20 @@ from config import BOT_USR
 
 users_data:dict = {
     "total_hunts":0,
-    "poke coins":0
+    "poke_dollars":0,
+    "in_loop":False
 }
 
 
 class CreateTask:
     def __init__(self, user_id: int, c: Client):
-        self.send_time: int = 120
+        self.send_time: int = 300
         self.user_id = user_id
         self.client = c
         self.scheduler = AsyncIOScheduler()
 
     async def _send_msg(self):
+        await asyncio.sleep(random.randint(1,3))
         await self.client.send_message(
             BOT_USR,
             text="/hunt"

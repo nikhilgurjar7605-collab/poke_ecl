@@ -3,7 +3,7 @@ from pyrogram.types import Message
 
 from config import PREFIXES
 
-from . import CreateTask
+from . import CreateTask, users_data
 from config import BOT_USR
 
 active_tasks: dict[int, CreateTask] = {}
@@ -11,8 +11,12 @@ active_tasks: dict[int, CreateTask] = {}
  
 @Client.on_message(filters.command(["start", "stop"], prefixes=PREFIXES))
 async def hunt_handler(c: Client, m: Message):
-    user_id = m.from_user.id
     command = m.command[0].lower()
+
+    user_id = m.from_user.id
+    c_user= await c.get_me()
+    if c_user.id != user_id:
+        return
  
     if command == "start":
         if user_id in active_tasks and active_tasks[user_id].is_running:
@@ -21,10 +25,13 @@ async def hunt_handler(c: Client, m: Message):
  
         task = CreateTask(user_id=user_id, c=c)
         task.start()
+        await task._send_msg()
         active_tasks[user_id] = task
+
+        users_data['in_loop'] = True
+
         await m.reply("**Auto-hunt started!**")
 
-        await c.send_message(BOT_USR, "/hunt")
  
     elif command == "stop":
         if user_id not in active_tasks or not active_tasks[user_id].is_running:
@@ -33,4 +40,5 @@ async def hunt_handler(c: Client, m: Message):
  
         active_tasks[user_id].stop()
         del active_tasks[user_id]
+        users_data['in_loop'] = False
         await m.reply("**Auto-hunt stopped!**")
