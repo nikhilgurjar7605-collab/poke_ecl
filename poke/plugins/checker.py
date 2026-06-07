@@ -50,11 +50,9 @@ class TextChecker:
             print(e)
 
     async def _send_hunt(self):
-            await self.task._send_msg()
+        await self.task._send_msg()
 
     def _stop_task(self):
-        active_tasks[self.user_id].stop()
-        del active_tasks[self.user_id]
         users_data["in_loop"] = False
 
     async def handle(self):
@@ -64,9 +62,19 @@ class TextChecker:
         elif self.text.startswith("Wild"):
             ra_1 = random.randint(0, 1)
             ra_2 = random.randint(0, 1)
-            await self._click_button(ra_1, ra_2)
 
-        elif "Exp" in self.text:
+            if users_data['mode'] == "pd":
+                await self._click_button(ra_1, ra_2)
+            else:
+                match = re.search(r"HP\s*:\s*(\d+)/(\d+)", self.text)
+                min_hp = int(match.group(1))
+                max_hp = int(match.group(2))
+                if max_hp/2 >= min_hp:
+                    await self._click_button(2,2)
+                else:
+                    await self._click_button(ra_1, ra_2)
+
+        elif self.text.endswith("Exp."):
             users_data["total_hunts"] += 1
 
             match = re.search(r"\+\s*(\d+)\s*💵\s*PokéDollars", self.text)
@@ -75,11 +83,14 @@ class TextChecker:
 
             await self._send_hunt()
 
-        elif "You lost!" in self.text:
+        elif self.text.startswith("You lost!") or self.text.endswith("Caught!") or self.text.endswith("fled!"):
+            if self.text.endswith("Caught!"):
+                users_data["poke_caught"] += 1
             await self._send_hunt()
+      
 
-        elif self.text.startswith("Your"):
-            return
+        elif self.text.startswith("🌟 Choose a Pokéball to throw:"):
+            await self._click_button(0,0)
 
         elif self.text.endswith("(3 warns = permanent ban)."):
             logger.warning("Warning received! Stopping auto-hunt to avoid ban.")

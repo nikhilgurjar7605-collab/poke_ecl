@@ -4,7 +4,6 @@ from pyrogram.types import Message
 from . import users_data
 from config import PREFIXES
 
-_me_cache: dict = {}
 
 
 @Client.on_message(filters.command("check", prefixes=PREFIXES))
@@ -18,5 +17,6 @@ async def check_handler(c: Client, m: Message):
     
     await m.reply(
         f"PokéDollars: {users_data['poke_dollars']}\n"
-        f"Hunts: {users_data['total_hunts']}"
+        f"Hunts: {users_data['total_hunts']}\n"
+        f"pokemon caught: {users_data['poke_caught']}"
     )
