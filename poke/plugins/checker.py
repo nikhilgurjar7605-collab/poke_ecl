@@ -8,7 +8,7 @@ from pyrogram.types import Message
 
 
 from config import BOT_USR
-from . import users_data, CreateTask
+from . import users_data, CreateTask, active_tasks
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +18,10 @@ class TextChecker:
         self.text = text
         self.msg = m
         self.client = c
+        self.user_id = m.from_user.id
         self.task = CreateTask(m.from_user.id, c)
 
     def _get_button(self, i: int, j: int) -> str | None:
-        """Safely retrieve callback_data from inline keyboard, returns None if missing."""
         try:
             markup = self.msg.reply_markup
             if markup is None:
@@ -35,12 +35,6 @@ class TextChecker:
 
     async def _click_button(self, i: int, j: int) -> bool:
         cb = self._get_button(i, j)
-        if cb is None:
-            logger.warning(
-                "Button [%d][%d] not found on message %d — skipping click.",
-                i, j, self.msg.id,
-            )
-            return False
 
         await asyncio.sleep(random.randint(1, 3))
 
@@ -56,7 +50,12 @@ class TextChecker:
             print(e)
 
     async def _send_hunt(self):
-        await self.task._send_msg()
+            await self.task._send_msg()
+
+    def _stop_task(self):
+        active_tasks[self.user_id].stop()
+        del active_tasks[self.user_id]
+        users_data["in_loop"] = False
 
     async def handle(self):
         if self.text.startswith("A wild"):
@@ -78,19 +77,24 @@ class TextChecker:
 
         elif "You lost!" in self.text:
             await self._send_hunt()
-        
+
         elif self.text.startswith("Your"):
             return
 
-        else:
-            return
+        elif self.text.endswith("(3 warns = permanent ban)."):
+            logger.warning("Warning received! Stopping auto-hunt to avoid ban.")
+            self._stop_task()
+
+            from config import GC_ID
+            await self.client.send_message(GC_ID, "Captcha encountered... stopping auto")
 
 
 @Client.on_edited_message(filters.user(BOT_USR))
 @Client.on_message(filters.user(BOT_USR))
 async def bot_response(c: Client, m: Message):
-    if users_data['in_loop'] == False:
+    if not users_data["in_loop"]:
         return
+
     text = m.caption or m.text
     if not text:
         return

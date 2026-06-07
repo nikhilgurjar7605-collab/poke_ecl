@@ -9,7 +9,8 @@ API_ID: int = int(os.getenv('api_id'))
 API_HASH: str = os.getenv('api_hash')
 SESSION_STRING:str = os.getenv('string_session',None)
 PREFIXES: list[str] = [".", "@", "#", "$", "%", "^", "&", "*", "~"]
-BOT_USR:str = "PokeEclipseXBot"
+BOT_USR:str = "PokeEclipseXBot",
+GC_ID:int = int(os.getenv('gc_id'))
 
 __all__ = [
     "API_ID",

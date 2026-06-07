@@ -5,5 +5,6 @@ userbot = Client(
     "poke_ecl",
     api_id=API_ID,
     api_hash=API_HASH,
+    session_string=SESSION_STRING,
     plugins=dict(root = "poke.plugins")
 )

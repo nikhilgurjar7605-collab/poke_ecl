@@ -3,18 +3,12 @@ import asyncio
 import random
 
 from pyrogram import Client
-
 from config import BOT_USR
 
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from pyrogram import Client
-from config import BOT_USR
-
-
-users_data:dict = {
-    "total_hunts":0,
-    "poke_dollars":0,
-    "in_loop":False
+users_data: dict = {
+    "total_hunts": 0,
+    "poke_dollars": 0,
+    "in_loop": False
 }
 
 
@@ -26,15 +20,15 @@ class CreateTask:
         self.scheduler = AsyncIOScheduler()
 
     async def _send_msg(self):
-        await asyncio.sleep(random.randint(1,3))
-        await self.client.send_message(
-            BOT_USR,
-            text="/hunt"
-        )
+        await asyncio.sleep(random.randint(1, 3))
+        await self.client.send_message(BOT_USR, text="/hunt")
 
     def start(self) -> bool:
         if self.scheduler.running:
             return False
+        
+        if users_data["in_loop"] == "True":
+            return
 
         self.scheduler.add_job(
             self._send_msg,
@@ -56,9 +50,8 @@ class CreateTask:
     @property
     def is_running(self) -> bool:
         return self.scheduler.running
-    
 
-__all__ = [
-    "CreateTask",
-    "users_data"
-]
+active_tasks: dict[int, CreateTask] = {}
+
+
+__all__ = ["CreateTask", "users_data", "active_tasks"]
