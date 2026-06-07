@@ -1,4 +1,4 @@
-# 🎮 PokeEclipse Auto-Hunter [created by claude not by breeze]
+# 🎮 PokeEclipse Auto-Hunter [created readme by claude not by breeze]
 
 A Telegram userbot that automatically hunts Pokémon in [@PokeEclipseXBot](https://t.me/PokeEclipseXBot), tracks your PokéDollars, and handles battle responses — all hands-free.
 
