@@ -90,7 +90,12 @@ class TextChecker:
       
 
         elif self.text.startswith("🌟 Choose a Pokéball to throw:"):
-            await self._click_button(0,0)
+            await asyncio.sleep(1)
+            try:
+                await self.msg.click("Galactic")
+            except:
+                await self._click_button(0, 0)
+            
 
         elif self.text.endswith("(3 warns = permanent ban)."):
             logger.warning("Warning received! Stopping auto-hunt to avoid ban.")
