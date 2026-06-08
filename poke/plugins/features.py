@@ -7,7 +7,6 @@ from config import PREFIXES
 async def features_handler(c: Client, m: Message):
     _user = await c.get_me()
 
-
     if _user.id != m.from_user.id:
         return
 
@@ -36,8 +35,34 @@ async def features_handler(c: Client, m: Message):
         "can attack catch or run based on settings\n\n"
 
         "check\n"
-        "check shows pokedollars hunts caught uptime and ping"
+        "check shows pokedollars hunts caught uptime and ping\n\n"
+
+        "NEW COMMANDS:\n"
+        ".help - Show all available commands\n"
+        ".pause - Pause the bot temporarily\n"
+        ".resume - Resume after pause\n"
+        ".restart - Restart the bot session\n"
+        ".stats - Show detailed session statistics\n"
+        ".history - Show hunt history\n"
+        ".reset - Reset session statistics\n"
+        ".ping - Check bot response time\n"
+        ".uptime - Show bot uptime\n"
+        ".version - Show version info\n"
+        ".settings - View current settings\n"
+        ".delay <min> <max> - Set delay range\n"
+        ".blacklist add/remove/list - Manage type blacklist\n"
+        ".notify on/off - Toggle catch notifications\n"
+        ".autorestart - Toggle auto-restart on captcha\n"
+        ".info - Show bot and session info\n"
+        ".export - Export session data to JSON\n"
+        ".safemode - Enable safe mode (3-6s delays)\n"
+        ".fastmode - Enable fast mode (1-2s delays)\n"
+        ".status - Quick status check\n\n"
+
+        "CAPTCHA DETECTION:\n"
+        "Bot automatically detects potential CAPTCHAs and warnings\n"
+        "Auto-pauses and notifies user when detected\n"
+        "Use .resume after solving CAPTCHA manually"
     )
 
     await m.reply(text)
-

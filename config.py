@@ -12,10 +12,17 @@ PREFIXES: list[str] = [".", "@", "#", "$", "%", "^", "&", "*", "~"]
 BOT_USR:str = "PokeEclipseXBot"
 GC_ID:int = int(os.getenv('gc_id'))
 
+# Render/Cloud Deployment Support
+PORT: int = int(os.getenv('PORT', 8080))
+HOST: str = os.getenv('HOST', '0.0.0.0')
+
 __all__ = [
     "API_ID",
     "API_HASH",
     "SESSION_STRING",
     "PREFIXES",
-    "BOT_USR"
+    "BOT_USR",
+    "GC_ID",
+    "PORT",
+    "HOST"
 ]
