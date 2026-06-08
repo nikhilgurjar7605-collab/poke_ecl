@@ -1,2 +1,4 @@
 https://github.com/KurimuzonAkuma/kurigram/archive/dev.zip
-
+pyrogram
+python-dotenv
+tgcrypto
