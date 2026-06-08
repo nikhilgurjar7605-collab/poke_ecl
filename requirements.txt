@@ -1,4 +1,4 @@
-https://github.com/KurimuzonAkuma/kurigram/archive/dev.zip
+kurigram
 tgcrypto
 apscheduler
 python-dotenv
