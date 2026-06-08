@@ -62,6 +62,7 @@ with Client("my_account", api_id=YOUR_API_ID, api_hash="YOUR_API_HASH") as app:
 api_id=12345678
 api_hash=abcdef1234567890abcdef1234567890
 string_session=your_session_string
+gc_id = your group chat id
 ```
 
 ---
