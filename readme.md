@@ -53,7 +53,7 @@ Prefixes: `. @ # $ % ^ & * ~`
 | `.pattern 1–4`| Set which battle buttons to click        |
 | `.run <type>` | Auto-run from that Pokémon type          |
 | `.run off`    | Disable auto-run                         |
-
+| `.run off`    | same as readme but short                 |
 ---
 
 ## Notes
