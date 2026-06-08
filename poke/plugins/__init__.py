@@ -1,4 +1,3 @@
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import asyncio
 import random
 
@@ -10,11 +9,11 @@ users_data: dict = {
     "poke_dollars": 0,
     "in_loop": False,
     "poke_caught":0,
-    "mode":None
+    "mode":"poke",
+    "pattern":1
 
 }
 
-active_tasks: dict = {}
 
 
 class CreateTask:
@@ -27,4 +26,4 @@ class CreateTask:
         await self.client.send_message(BOT_USR, text="/hunt")
 
 
-__all__ = ["CreateTask", "users_data", "active_tasks"]
+__all__ = ["CreateTask", "users_data"]

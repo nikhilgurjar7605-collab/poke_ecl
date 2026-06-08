@@ -1,22 +1,22 @@
-# 🎮 PokeEclipse Auto-Hunter [created readme by claude not by breeze]
+# 🎮 PokeEclipse Auto-Hunter
 
-A Telegram userbot that automatically hunts Pokémon in [@PokeEclipseXBot](https://t.me/PokeEclipseXBot), tracks your PokéDollars, and handles battle responses — all hands-free.
+A Telegram userbot that automatically hunts Pokémon in @PokeEclipseXBot, tracks your PokéDollars, and handles battle responses — all hands-free.
 
 ---
 
 ## ⚠️ Before You Start
 
-> This is a **userbot** — it runs as *your* Telegram account, not a bot account.
-> Using userbots may violate Telegram's Terms of Service. Use at your own risk.
+This is a userbot — it runs as your Telegram account, not a bot account.
+Using userbots may violate Telegram's Terms of Service. Use at your own risk.
 
 ---
 
 ## 📋 Requirements
 
-- Python **3.10 or higher**
-- A Telegram account
-- Your Telegram **API ID** and **API Hash** (free, takes 2 minutes)
-- A **Pyrogram session string** for your account
+* Python 3.10 or higher
+* A Telegram account
+* Telegram API ID and API Hash
+* Pyrogram session string
 
 ---
 
@@ -35,21 +35,19 @@ cd poke_ecl
 pip install -r requirements.txt
 ```
 
-> 💡 **Optional but recommended:** Install TgCrypto for a much faster experience:
-> ```bash
-> pip install tgcrypto
-> ```
+Optional (recommended for speed):
 
-### 3. Get your Telegram API credentials
+```bash
+pip install tgcrypto
+```
 
-1. Go to [https://my.telegram.org](https://my.telegram.org) and log in
-2. Click **API Development Tools**
-3. Fill in the form (App title and short name can be anything)
-4. Copy your **api_id** and **api_hash**
+### 3. Get Telegram API credentials
 
-### 4. Generate a session string
+Go to https://my.telegram.org
+Login → API Development Tools → create app
+Copy api_id and api_hash
 
-Run this once in your terminal to generate a session string:
+### 4. Generate session string
 
 ```python
 from pyrogram import Client
@@ -58,20 +56,13 @@ with Client("my_account", api_id=YOUR_API_ID, api_hash="YOUR_API_HASH") as app:
     print(app.export_session_string())
 ```
 
-Copy the long string it prints — that's your `string_session`.
-
-### 5. Create your `.env` file
-
-Create a file named `.env` in the project root folder:
+### 5. Create `.env`
 
 ```env
 api_id=12345678
 api_hash=abcdef1234567890abcdef1234567890
-string_session=BQA...your_long_session_string_here...
+string_session=your_session_string
 ```
-
-> ⚠️ **Never share your `.env` file or session string with anyone.**
-> It gives full access to your Telegram account.
 
 ---
 
@@ -81,31 +72,71 @@ string_session=BQA...your_long_session_string_here...
 python -m poke
 ```
 
-You should see the bot connect to Telegram. Now open your Telegram app and use the commands below.
-
 ---
 
 ## 💬 Commands
 
-All commands can be triggered with any of these prefixes: `. @ # $ % ^ & * ~`
+All commands work with prefixes: `. @ # $ % ^ & * ~`
 
-| Command | Description |
-|---|---|
+### Core Controls
+
+| Command  | Description        |
+| -------- | ------------------ |
 | `.start` | Start auto-hunting |
-| `.stop` | Stop auto-hunting |
-| `.check` | Check your current PokéDollars and total hunts |
+| `.stop`  | Stop auto-hunting  |
+| `.check` | Show stats         |
 
-**Example:** `.start` or `@start` or `#start` — all work the same.
+---
+
+### Mode System
+
+| Command      | Description               |
+| ------------ | ------------------------- |
+| `.mode pd`   | Focus on PokéDollars      |
+| `.mode poke` | Focus on catching Pokémon |
+
+---
+
+### Pattern System
+
+| Command      | Description                |
+| ------------ | -------------------------- |
+| `.pattern 1` | Only (0,0)                 |
+| `.pattern 2` | (0,0), (0,1)               |
+| `.pattern 3` | (0,0), (0,1), (1,0)        |
+| `.pattern 4` | (0,0), (0,1), (1,0), (1,1) |
+
+Patterns control which inline buttons are randomly clicked during battles.
 
 ---
 
 ## 🔄 How It Works
 
-1. You send `.start` — the bot immediately sends `/hunt` to [@PokeEclipseXBot](https://t.me/PokeEclipseXBot)
-2. When a wild Pokémon appears, the bot automatically clicks the battle button
-3. After each hunt result (win or loss), it waits and sends `/hunt` again
-4. Every 5 minutes it also sends `/hunt` on a scheduled interval as a fallback
-5. If the bot receives a warning message from the game, it **automatically stops** to protect your account from a ban
+1. `.start` sends `/hunt`
+2. Detects wild Pokémon messages
+3. Automatically clicks battle buttons
+4. Uses selected pattern for random clicks
+5. Applies mode logic:
+
+   * pd → random farming
+   * poke → HP-based decisions
+6. Tracks rewards and stats
+7. Continues loop automatically
+8. Stops if warning/captcha detected
+
+---
+
+## 📊 Stats Tracking
+
+* PokéDollars earned
+* Total hunts
+* Pokémon caught
+
+Check anytime using:
+
+```bash
+.check
+```
 
 ---
 
@@ -114,35 +145,41 @@ All commands can be triggered with any of these prefixes: `. @ # $ % ^ & * ~`
 ```
 poke_ecl/
 ├── poke/
-│   ├── __init__.py        # Core data and scheduler logic
-│   ├── __main__.py        # Entry point
+│   ├── __init__.py
+│   ├── __main__.py
 │   └── plugins/
-│       ├── checker.py     # Handles bot responses and button clicks
-│       ├── check.py       # The /check command
-│       └── start_auto.py  # The /start and /stop commands
-├── config.py              # Loads settings from .env
-├── .env                   # Your credentials (you create this)
-└── requirements.txt       # Python dependencies
+│       ├── checker.py
+│       ├── start.py
+│       ├── mode.py
+│       ├── check.py
+├── config.py
+├── .env
+└── requirements.txt
 ```
+
+---
+
+## ⚠️ Safety
+
+* Bot stops automatically on warnings
+* Avoid long continuous runs
+* Uses random delays to reduce detection
 
 ---
 
 ## ❓ Troubleshooting
 
-**`TgCrypto is missing!`**
-Not an error — just a speed warning. Run `pip install tgcrypto` to fix it.
+TgCrypto warning
+Install with `pip install tgcrypto`
 
-**`ValueError: invalid literal for int() with base 10: 'None'`**
-Your `api_id` is missing from `.env`. Double-check the file exists and is filled in correctly.
+Bot not responding
+Make sure you sent commands from your own account
 
-**Bot connects but doesn't hunt**
-Make sure you sent `.start` in your Telegram app *from your own account* — commands from other users are ignored.
-
-**Session string errors / auth errors**
-Your session string may be expired. Re-run the session generation script in Step 4 to get a fresh one.
+Session issues
+Regenerate session string
 
 ---
 
 ## 📄 License
 
-MIT — do whatever you want, but you're responsible for how you use it.
+MIT License

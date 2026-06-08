@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 from config import PREFIXES
-from . import CreateTask, users_data, active_tasks
+from . import CreateTask, users_data
 from config import BOT_USR
 
 
@@ -18,17 +18,14 @@ async def hunt_handler(c: Client, m: Message):
 
 
     if command == "start":
-        if user_id in active_tasks and active_tasks[user_id].is_running:
+        if users_data["in_loop"] == True:
             await m.reply("Auto-hunt is already running.")
             return
-        
-        if users_data['mode'] == None:
-            return await m.reply("choose a mode first")
 
         task = CreateTask(user_id=user_id, c=c)
         await task._send_msg()
         users_data["in_loop"] = True
-        await m.reply("**Auto-hunt started!**")
+        await m.reply(f"**Auto-hunt started!**\ncurrent mode: {users_data['mode']}")
 
     elif command == "stop":
         if users_data["in_loop"] == False :

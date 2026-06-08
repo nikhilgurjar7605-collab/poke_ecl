@@ -8,9 +8,16 @@ from pyrogram.types import Message
 
 
 from config import BOT_USR
-from . import users_data, CreateTask, active_tasks
+from . import users_data, CreateTask
 
 logger = logging.getLogger(__name__)
+
+pattern:dict = {
+    1:[[0,0]],
+    2:[[0,0],[0,1]],
+    3:[[0,0],[0,1],[1,0]],
+    4:[[0,0],[0,1],[1,0],[1,1]]
+}
 
 
 class TextChecker:
@@ -20,6 +27,7 @@ class TextChecker:
         self.client = c
         self.user_id = m.from_user.id
         self.task = CreateTask(m.from_user.id, c)
+        
 
     def _get_button(self, i: int, j: int) -> str | None:
         try:
@@ -60,8 +68,8 @@ class TextChecker:
             await self._click_button(0, 0)
 
         elif self.text.startswith("Wild"):
-            ra_1 = random.randint(0, 1)
-            ra_2 = random.randint(0, 1)
+            coords = random.choice(pattern.get(users_data["pattern"]))
+            ra_1, ra_2 = coords
 
             if users_data['mode'] == "pd":
                 await self._click_button(ra_1, ra_2)
@@ -72,10 +80,7 @@ class TextChecker:
                 if max_hp/2 >= min_hp:
                     await self._click_button(2,2)
                 else:
-                    if random.randint(0,100) > 50:
-                        await self._click_button(ra_1, ra_2)
-                    else:
-                        await self._click_button(2,2)
+                    await self._click_button(ra_1,ra_2)
 
         elif self.text.endswith("Exp."):
             users_data["total_hunts"] += 1
@@ -86,7 +91,7 @@ class TextChecker:
 
             await self._send_hunt()
 
-        elif self.text.startswith("You lost!") or self.text.endswith("Caught!") or self.text.endswith("fled!"):
+        elif self.text.endswith("lost!") or self.text.endswith("Caught!") or self.text.endswith("fled!"):
             if self.text.endswith("Caught!"):
                 users_data["poke_caught"] += 1
             await self._send_hunt()
@@ -106,6 +111,8 @@ class TextChecker:
 
             from config import GC_ID
             await self.client.send_message(GC_ID, "Captcha encountered... stopping auto")
+        
+
 
 
 @Client.on_edited_message(filters.user(BOT_USR))
