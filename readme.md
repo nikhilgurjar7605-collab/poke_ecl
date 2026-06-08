@@ -1,186 +1,69 @@
-# 🎮 PokeEclipse Auto-Hunter
+# PokeEclipse Auto-Hunter
 
-A Telegram userbot that automatically hunts Pokémon in @PokeEclipseXBot, tracks your PokéDollars, and handles battle responses — all hands-free.
+Telegram userbot that auto-hunts Pokémon in @PokeEclipseXBot — battles, catches, and tracks stats hands-free.
 
----
-
-## ⚠️ Before You Start
-
-This is a userbot — it runs as your Telegram account, not a bot account.
-Using userbots may violate Telegram's Terms of Service. Use at your own risk.
+> **Warning:** Runs as your Telegram account. May violate Telegram's ToS. Use at your own risk.
 
 ---
 
-## 📋 Requirements
+## Setup
 
-* Python 3.10 or higher
-* A Telegram account
-* Telegram API ID and API Hash
-* Pyrogram session string
-
----
-
-## 🛠️ Setup Guide
-
-### 1. Clone the repository
-
+**1. Clone & install**
 ```bash
 git clone https://github.com/yourrepo/poke_ecl.git
 cd poke_ecl
-```
-
-### 2. Install dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
-Optional (recommended for speed):
+**2. Get credentials** — [my.telegram.org](https://my.telegram.org) → API Development Tools → Create app
 
-```bash
-pip install tgcrypto
-```
-
-### 3. Get Telegram API credentials
-
-Go to https://my.telegram.org
-Login → API Development Tools → create app
-Copy api_id and api_hash
-
-### 4. Generate session string
-
+**3. Generate session string**
 ```python
 from pyrogram import Client
-
-with Client("my_account", api_id=YOUR_API_ID, api_hash="YOUR_API_HASH") as app:
+with Client("acc", api_id=YOUR_ID, api_hash="YOUR_HASH") as app:
     print(app.export_session_string())
 ```
 
-### 5. Create `.env`
-
+**4. Create `.env`**
 ```env
 api_id=12345678
-api_hash=abcdef1234567890abcdef1234567890
+api_hash=your_api_hash
 string_session=your_session_string
-gc_id = your group chat id
+gc_id=your_group_chat_id
 ```
 
----
-
-## 🚀 Running the Bot
-
+**5. Run**
 ```bash
 python -m poke
 ```
 
 ---
 
-## 💬 Commands
+## Commands
 
-All commands work with prefixes: `. @ # $ % ^ & * ~`
+Prefixes: `. @ # $ % ^ & * ~`
 
-### Core Controls
+| Command       | Description                              |
+| ------------- | ---------------------------------------- |
+| `.start`      | Start auto-hunting                       |
+| `.stop`       | Stop auto-hunting                        |
+| `.check`      | Show stats                               |
+| `.mode pd`    | Farm PokéDollars                         |
+| `.mode poke`  | Catch Pokémon (HP-based)                 |
+| `.pattern 1–4`| Set which battle buttons to click        |
+| `.run <type>` | Auto-run from that Pokémon type          |
+| `.run off`    | Disable auto-run                         |
+| `.features`    | same as readme but short                 |
+---
 
-| Command  | Description        |
-| -------- | ------------------ |
-| `.start` | Start auto-hunting |
-| `.stop`  | Stop auto-hunting  |
-| `.check` | Show stats         |
+## Notes
+
+- Auto-stops on captcha or warning detection
+- Uses random delays to avoid detection
+- Stats tracked: hunts, catches, PokéDollars
 
 ---
 
-### Mode System
+## License
 
-| Command      | Description               |
-| ------------ | ------------------------- |
-| `.mode pd`   | Focus on PokéDollars      |
-| `.mode poke` | Focus on catching Pokémon |
-
----
-
-### Pattern System
-
-| Command      | Description                |
-| ------------ | -------------------------- |
-| `.pattern 1` | Only (0,0)                 |
-| `.pattern 2` | (0,0), (0,1)               |
-| `.pattern 3` | (0,0), (0,1), (1,0)        |
-| `.pattern 4` | (0,0), (0,1), (1,0), (1,1) |
-
-Patterns control which inline buttons are randomly clicked during battles.
-
----
-
-## 🔄 How It Works
-
-1. `.start` sends `/hunt`
-2. Detects wild Pokémon messages
-3. Automatically clicks battle buttons
-4. Uses selected pattern for random clicks
-5. Applies mode logic:
-
-   * pd → random farming
-   * poke → HP-based decisions
-6. Tracks rewards and stats
-7. Continues loop automatically
-8. Stops if warning/captcha detected
-
----
-
-## 📊 Stats Tracking
-
-* PokéDollars earned
-* Total hunts
-* Pokémon caught
-
-Check anytime using:
-
-```bash
-.check
-```
-
----
-
-## 📁 Project Structure
-
-```
-poke_ecl/
-├── poke/
-│   ├── __init__.py
-│   ├── __main__.py
-│   └── plugins/
-│       ├── checker.py
-│       ├── start.py
-│       ├── mode.py
-│       ├── check.py
-├── config.py
-├── .env
-└── requirements.txt
-```
-
----
-
-## ⚠️ Safety
-
-* Bot stops automatically on warnings
-* Avoid long continuous runs
-* Uses random delays to reduce detection
-
----
-
-## ❓ Troubleshooting
-
-TgCrypto warning
-Install with `pip install tgcrypto`
-
-Bot not responding
-Make sure you sent commands from your own account
-
-Session issues
-Regenerate session string
-
----
-
-## 📄 License
-
-MIT License
+MIT
