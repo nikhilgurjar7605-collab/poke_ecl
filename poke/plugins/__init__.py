@@ -10,8 +10,8 @@ users_data: dict = {
     "in_loop": False,
     "poke_caught":0,
     "mode":"poke",
-    "pattern":1
-
+    "pattern":1,
+    "run_from":None
 }
 
 
