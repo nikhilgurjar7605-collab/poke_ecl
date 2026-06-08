@@ -145,20 +145,21 @@ services:
 ### Port Configuration
 
 - The bot uses port **8080** by default (configurable via `PORT` env var)
-- Render assigns a random external port, but the bot doesn't serve HTTP
-- The port is kept for compatibility with Render's web service model
-- The bot stays alive using Pyrogram's `idle()` function
+- **IMPORTANT**: Render requires web services to bind to a port
+- The bot now includes a lightweight HTTP server on port 8080 for health checks
+- Health check endpoints: `/` and `/health`
+- This keeps your Render service from sleeping
 
 ### Environment Variables for Render
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `API_ID` | Telegram API ID | Yes |
-| `API_HASH` | Telegram API Hash | Yes |
-| `STRING_SESSION` | Pyrogram session string | Yes |
-| `GC_ID` | Group ID for notifications | Yes |
-| `PORT` | Port number (default: 8080) | No |
-| `HOST` | Host address (default: 0.0.0.0) | No |
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `API_ID` | Telegram API ID | Yes | - |
+| `API_HASH` | Telegram API Hash | Yes | - |
+| `STRING_SESSION` | Pyrogram session string | Yes | - |
+| `GC_ID` | Group ID for notifications | Yes | - |
+| `PORT` | Port number | No | 8080 |
+| `HOST` | Host address | No | 0.0.0.0 |
 
 ## 🔧 Configuration
 

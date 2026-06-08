@@ -18,16 +18,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Expose port (Render requirement, though bot doesn't use HTTP)
+# Expose port (Render requirement)
 EXPOSE 8080
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV PORT=8080
+ENV HOST=0.0.0.0
 
-# Health check (optional, keeps Render happy)
+# Health check endpoint
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import pyrogram; print('OK')" || exit 1
+    CMD curl -f http://localhost:8080/health || exit 1
 
 # Run the bot
 CMD ["python", "-m", "poke"]
