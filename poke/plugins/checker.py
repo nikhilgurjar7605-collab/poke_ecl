@@ -70,7 +70,7 @@ class TextChecker:
                 raw_types = type_match.group(1).split("/")
                 wild_types = [re.sub(r"[^a-zA-Z]", "", t).lower() for t in raw_types]
 
-            if users_data["run_from"].lower() in wild_types:
+            if users_data["run_from"] != None and users_data["run_from"].lower() in wild_types:
                 await asyncio.sleep(1)
                 await self.msg.click("Run")
                 return
