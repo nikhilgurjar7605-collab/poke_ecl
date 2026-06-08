@@ -1,41 +1,33 @@
 # PokeEclipse Auto-Hunter - Render Deployment Configuration
 
-# Environment Variables (set these in Render Dashboard)
-# API_ID=your_api_id
-# API_HASH=your_api_hash
-# STRING_SESSION=your_session_string
-# GC_ID=your_group_id
-
-# Build Command
-build: pip install -r requirements.txt
-
-# Start Command
-start: python -m poke
-
-# Port Configuration
-# Render will assign a random port via PORT environment variable
-# The bot doesn't need to bind to a specific port as it uses Telegram's API
-# But we set this for compatibility with Render's web service model
-
-PORT: 8080
-
-# Health Check Path (optional, for web services)
-# Since this is a Telegram bot, it doesn't serve HTTP
-# We use idle() to keep the process running
-health_check: /
-
-# Instance Size
-# free tier is sufficient for this bot
-instance_size: free
-
-# Region
-# Choose closest to your Telegram server
-region: oregon
-
-# Auto-Deploy
-auto_deploy: true
-
-# Docker Support (alternative to buildpacks)
-# Uncomment below if using Docker instead
-# docker_context: .
-# dockerfile: Dockerfile
+services:
+  - type: web
+    name: pokeeclipse-auto-hunter
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m poke
+    
+    # Environment Variables (set these in Render Dashboard)
+    # API_ID=your_api_id
+    # API_HASH=your_api_hash
+    # STRING_SESSION=your_session_string
+    # GC_ID=your_group_id
+    
+    # Port Configuration - Required for Render Web Services
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: HOST
+        value: 0.0.0.0
+    
+    # Health Check Path
+    healthCheckPath: /health
+    
+    # Instance Size
+    plan: free
+    
+    # Region
+    region: oregon
+    
+    # Auto-Deploy
+    autoDeploy: true

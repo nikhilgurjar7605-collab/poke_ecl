@@ -2,3 +2,4 @@ https://github.com/KurimuzonAkuma/kurigram/archive/dev.zip
 pyrogram
 python-dotenv
 tgcrypto
+aiohttp>=3.8.0
