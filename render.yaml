@@ -20,7 +20,7 @@ services:
       - key: HOST
         value: 0.0.0.0
     
-    # Health Check Path
+    # Health Check Path - Keeps bot alive on cloud platforms
     healthCheckPath: /health
     
     # Instance Size
@@ -31,3 +31,6 @@ services:
     
     # Auto-Deploy
     autoDeploy: true
+    
+    # Keep-alive settings for stability
+    dockerfilePath: ./Dockerfile

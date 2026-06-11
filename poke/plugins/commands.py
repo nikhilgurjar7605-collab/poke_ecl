@@ -19,37 +19,137 @@ async def cmd_help(c: Client, m: Message):
         return
     
     help_text = """
-**🤖 PokeEclipse Auto-Hunter Commands**
+**🤖 PokeEclipse Auto-Hunter - Complete Command List**
 
-**Basic Controls:**
+**🎮 Basic Controls:**
 `.start` - Start auto hunting
 `.stop` - Stop auto hunting
 `.pause` - Pause the bot temporarily
 `.resume` - Resume after pause
 `.restart` - Restart the bot session
+`.autohunt` - Toggle auto-hunt mode
 
-**Settings:**
+**⚙️ Settings:**
 `.mode <poke/pd>` - Set hunting mode (catch/dollars)
 `.pattern <1-4>` - Set click pattern complexity
 `.run <type/off>` - Run from specific Pokémon type
 `.delay <min> <max>` - Set delay range between actions
 `.blacklist <add/remove/list> <type>` - Manage type blacklist
+`.interval <seconds>` - Set hunting interval
+`.limit <count>` - Set hunt limit
+`.target <type>` - Set target Pokémon type
+`.priority <high/normal/low>` - Set priority mode
+`.smart` - Toggle smart mode
+`.safemode` - Enable safe mode (3-6s delays)
+`.fastmode` - Enable fast mode (1-2s delays)
 
-**Statistics:**
+**📊 Statistics:**
 `.stats` - Show detailed session statistics
 `.check` - Quick stats check
 `.history` - Show hunt history
 `.reset` - Reset session statistics
+`.status` - Quick status check
+`.export` - Export session data to JSON
 
-**System:**
+**🔧 System:**
 `.ping` - Check bot response time
 `.uptime` - Show bot uptime
 `.version` - Show version info
 `.settings` - View current settings
 `.notify <on/off>` - Toggle catch notifications
+`.autorestart` - Toggle auto-restart on captcha
+`.info` - Show bot and session info
+`.alive` - Check if bot is alive
+`.logs` - View recent logs
+`.eval <code>` - Evaluate Python code (owner only)
 
-**Info:**
-`.features` - List all features
+**👤 User Commands:**
+`.me` - Get your Telegram info
+`.myid` - Get your Telegram ID
+`.time` - Get current time
+`.date` - Get current date
+`.setbio <text>` - Set your Telegram bio
+`.setname <first> [last]` - Set your Telegram name
+
+**🎯 Pokémon Game:**
+`.hunt` - Manual hunt command
+`.catch` - Manual catch command
+`.ball <type>` - Select Pokéball
+`.bag` - Check your bag
+`.pokemon` - View your Pokémon
+`.market` - Check market prices
+`.daily` - Claim daily reward
+`.profile` - View game profile
+`.trade <user>` - Initiate trade
+`.battle` - Start a battle
+
+**👥 Group Management:**
+`.tagall` - Tag all members
+`.kick` - Kick a user
+`.ban` - Ban a user
+`.unban` - Unban a user
+`.mute` - Mute a user
+`.unmute` - Unmute a user
+`.pin` - Pin a message
+`.unpin` - Unpin a message
+`.chatinfo` - Get chat information
+`.promote` - Promote to admin
+
+**💬 Message Actions:**
+`.forward <chat_id>` - Forward a message
+`.copy <chat_id>` - Copy without tag
+`.send <chat> <msg>` - Send to specific chat
+`.dm <user> <msg>` - Send DM
+`.save` - Save to saved messages
+`.edit <text>` - Edit your message
+`.reply <text>` - Reply programmatically
+`.delete [count]` - Delete messages
+`.clear [count]` - Clear chat messages
+`.purge` - Purge messages
+
+**🎭 Fun & Entertainment:**
+`.roll` - Roll a dice
+`.coin` - Flip a coin
+`.random <min> <max>` - Random number
+`.joke` - Tell a joke
+`.quote` - Inspirational quote
+`.fact` - Random fact
+`.compliment` - Get a compliment
+`.motivate` - Motivational message
+`.weather` - Weather update
+`.love <names>` - Love calculator
+
+**⏰ Automation:**
+`.remind <min> <msg>` - Set reminder
+`.schedule <HH:MM> <msg>` - Schedule message
+`.autosell` - Toggle auto-sell
+`.autobattle` - Toggle auto-battle
+
+**🔐 Admin Commands:**
+`.join <link>` - Join channel/group
+`.leave` - Leave group
+`.block` - Block a user
+`.unblock` - Unblock a user
+`.archive` - Archive chat
+`.unarchive` - Unarchive chat
+`.whois` - Get user info
+
+**🚀 Advanced:**
+`.spam <count> <text>` - Spam messages
+`.fspam <count> <text>` - Fast spam
+`.echo <text>` - Echo message
+`.repeat <count> <text>` - Repeat message
+`.type <text>` - Typing effect
+`.speedtest` - Test response speed
+`.inspect` - Inspect message
+`.source` - Get message source
+`.gcast <msg>` - Global cast
+`.gucast <msg>` - Global user cast
+
+**🛠️ Bot Control:**
+`.update` - Check for updates
+`.changelog` - Show changelog
+`.shutdown` - Shutdown bot
     """
     await m.reply(help_text)
 
