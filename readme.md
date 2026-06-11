@@ -7,7 +7,7 @@ This tool is for educational purposes only. Use at your own risk. Violating game
 
 ## 🚀 Features
 
-### 🎮 80+ Enhanced Commands
+### 🎮 120+ Enhanced Commands
 - **Basic Controls**: `.start`, `.stop`, `.pause`, `.resume`, `.restart`, `.autohunt`
 - **Settings**: `.mode`, `.pattern`, `.run`, `.delay`, `.blacklist`, `.interval`, `.target`, `.priority`, `.smart`, `.safemode`, `.fastmode`
 - **Statistics**: `.stats`, `.check`, `.history`, `.reset`, `.status`, `.export`
@@ -21,6 +21,7 @@ This tool is for educational purposes only. Use at your own risk. Violating game
 - **Admin**: `.join`, `.leave`, `.block`, `.unblock`, `.archive`, `.unarchive`, `.whois`
 - **Advanced**: `.spam`, `.fspam`, `.echo`, `.repeat`, `.type`, `.speedtest`, `.inspect`, `.source`, `.gcast`, `.gucast`
 - **Bot Control**: `.update`, `.changelog`, `.shutdown`, `.restart`
+- **🤖 Bot Handler (NEW)**: `.record`, `.stoprecord`, `.recordingstatus`, `.analyze`, `.setautorule`, `.toggleauto`, `.listrules`, `.clearhistory`, `.botstats`, `.exportdata`, `.importdata`
 
 
 ### ☁️ Cloud Deployment Features
@@ -81,6 +82,37 @@ This tool is for educational purposes only. Use at your own risk. Violating game
 - `.status` - Quick status check
 - `.help` - Show all available commands
 - `.features` - List all features
+
+### 🤖 NEW: Bot Handler Commands (Interact with Other Bots)
+
+**Recording & Analysis:**
+- `.record <bot_username> [session_name]` - Start recording a bot's moves
+- `.stoprecord [bot_username]` - Stop recording and save session
+- `.recordingstatus` - Show all active recordings with stats
+- `.analyze <filename>` - Analyze recorded data (response times, patterns, keywords)
+
+**Auto-Response Rules:**
+- `.setautorule <bot> <trigger> <response> [type]` - Set auto-response rule
+  - Types: `trigger` (default), `keyword`, `timing`
+  - Example: `.setautorule @PokemonBot wild pokemon catch`
+- `.toggleauto <bot> <on/off>` - Enable/disable auto-responder for a bot
+- `.listrules [bot]` - List all auto-response rules (optionally filter by bot)
+
+**Data Management:**
+- `.clearhistory [bot]` - Clear interaction history
+- `.botstats [bot]` - Show statistics about bot interactions
+- `.exportdata` - Export all bot data to JSON backup file
+- `.importdata` - Import bot data from exported JSON (reply to file)
+
+**How It Works:**
+1. Start recording: `.record @PokemonBot hunting_session`
+2. Interact with the bot normally - all moves are recorded
+3. Stop recording: `.stoprecord @PokemonBot`
+4. Analyze patterns: `.analyze PokemonBot_hunting_session_1234567890.json`
+5. Set auto-rules based on analysis: `.setautorule @PokemonBot wildpokemon .catch`
+6. Enable auto-responder: `.toggleauto @PokemonBot on`
+
+The bot will now automatically respond to the target bot based on learned patterns!
 
 ## 📦 Installation
 

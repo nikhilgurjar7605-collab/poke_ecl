@@ -148,6 +148,23 @@ async def cmd_help(c: Client, m: Message):
 
 **🛠️ Bot Control:**
 `.update` - Check for updates
+`.changelog` - View changelog
+`.shutdown` - Shutdown bot (owner only)
+
+**🤖 Bot Handler (NEW):**
+`.record <bot> [session]` - Start recording a bot's moves
+`.stoprecord [bot]` - Stop recording bot moves
+`.recordingstatus` - Show active recordings
+`.analyze <file>` - Analyze recorded bot data
+`.setautorule <bot> <trigger> <response> [type]` - Set auto-response rule
+`.toggleauto <bot> <on/off>` - Enable/disable auto-responder
+`.listrules [bot]` - List all auto-response rules
+`.clearhistory [bot]` - Clear bot interaction history
+`.botstats [bot]` - Show bot interaction statistics
+`.exportdata` - Export all bot data to JSON
+`.importdata` - Import bot data (reply to file)
+
+**🛠️ Bot Control (cont.):**
 `.changelog` - Show changelog
 `.shutdown` - Shutdown bot
     """
