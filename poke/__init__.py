@@ -8,3 +8,6 @@ userbot = Client(
     session_string=SESSION_STRING,
     plugins=dict(root = "poke.plugins")
 )
+
+# Alias for bot handler plugin compatibility
+app = userbot

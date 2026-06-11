@@ -96,7 +96,7 @@ if __name__ == "__main__":
         try:
             # Start the userbot
             logger.info("🤖 Starting PokeEclipse Auto-Hunter...")
-            userbot.start()
+            await userbot.start()
             logger.info("✅ Userbot started successfully")
             
             # Start web server for cloud platforms (keeps bot alive)
@@ -119,12 +119,14 @@ if __name__ == "__main__":
             shutdown_flag = True
             
             # Cancel tasks
-            server_task.cancel()
-            monitor_task.cancel()
+            if 'server_task' in locals():
+                server_task.cancel()
+            if 'monitor_task' in locals():
+                monitor_task.cancel()
             
             # Stop userbot
             try:
-                userbot.stop()
+                await userbot.stop()
                 logger.info("✅ Userbot stopped")
             except Exception as e:
                 logger.error(f"Error stopping userbot: {e}")
