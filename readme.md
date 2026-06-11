@@ -7,6 +7,30 @@ This tool is for educational purposes only. Use at your own risk. Violating game
 
 ## 🚀 Features
 
+### 🎮 80+ Enhanced Commands
+- **Basic Controls**: `.start`, `.stop`, `.pause`, `.resume`, `.restart`, `.autohunt`
+- **Settings**: `.mode`, `.pattern`, `.run`, `.delay`, `.blacklist`, `.interval`, `.target`, `.priority`, `.smart`, `.safemode`, `.fastmode`
+- **Statistics**: `.stats`, `.check`, `.history`, `.reset`, `.status`, `.export`
+- **System**: `.ping`, `.uptime`, `.version`, `.settings`, `.notify`, `.autorestart`, `.info`, `.alive`, `.logs`, `.eval`
+- **User**: `.me`, `.myid`, `.time`, `.date`, `.setbio`, `.setname`
+- **Pokémon Game**: `.hunt`, `.catch`, `.ball`, `.bag`, `.pokemon`, `.market`, `.daily`, `.profile`, `.trade`, `.battle`
+- **Group Management**: `.tagall`, `.kick`, `.ban`, `.unban`, `.mute`, `.unmute`, `.pin`, `.unpin`, `.chatinfo`, `.promote`
+- **Message Actions**: `.forward`, `.copy`, `.send`, `.dm`, `.save`, `.edit`, `.reply`, `.delete`, `.clear`, `.purge`
+- **Fun & Entertainment**: `.roll`, `.coin`, `.random`, `.joke`, `.quote`, `.fact`, `.compliment`, `.motivate`, `.weather`, `.love`
+- **Automation**: `.remind`, `.schedule`, `.autosell`, `.autobattle`
+- **Admin**: `.join`, `.leave`, `.block`, `.unblock`, `.archive`, `.unarchive`, `.whois`
+- **Advanced**: `.spam`, `.fspam`, `.echo`, `.repeat`, `.type`, `.speedtest`, `.inspect`, `.source`, `.gcast`, `.gucast`
+- **Bot Control**: `.update`, `.changelog`, `.shutdown`, `.restart`
+
+
+### ☁️ Cloud Deployment Features
+- **Health Check Endpoints**: `/health`, `/status` - Keeps bot alive on Render/Railway/Heroku
+- **Auto-Reconnection Monitor**: Automatically reconnects if connection drops
+- **Graceful Shutdown**: Proper signal handling (SIGINT, SIGTERM) for clean shutdowns
+- **Web Server Integration**: Built-in aiohttp server for cloud platform compatibility
+- **Docker Support**: Optimized Dockerfile with health checks
+- **Environment Variables**: Easy configuration via `.env` file
+
 ### Core Features
 - **Auto Hunting**: Automatically hunts Pokémon and earns PokéDollars
 - **Smart Battle Logic**: Attacks or catches based on HP threshold
