@@ -1247,7 +1247,7 @@ async def cmd_whois(c: Client, m: Message):
 
 @Client.on_message(filters.command("gcast", prefixes=PREFIXES))
 async def cmd_gcast(c: Client, m: Message):
-    """Global cast to all chats"""
+    """Global cast to all groups where bot is joined"""
     if m.from_user.id != (await c.get_me()).id:
         return
     
@@ -1255,16 +1255,45 @@ async def cmd_gcast(c: Client, m: Message):
     if len(args) < 2:
         return await m.reply("Usage: `.gcast <message>`")
     
+    message_text = args[1]
     success = 0
     failed = 0
+    skipped = 0
     
-    # This is a placeholder - implement carefully
-    await m.reply(f"📢 Global cast initiated (placeholder)")
+    progress_msg = await m.reply("📢 **Starting Global Cast...**\n\nPlease wait...")
+    
+    async for dialog in c.get_dialogs():
+        try:
+            # Only send to groups (not users or channels)
+            if dialog.chat.type in ["group", "supergroup"]:
+                try:
+                    await c.send_message(dialog.chat.id, message_text)
+                    success += 1
+                    await asyncio.sleep(0.5)  # Small delay to avoid flooding
+                except Exception as e:
+                    failed += 1
+                    logger.error(f"Failed to send to {dialog.chat.title}: {e}")
+            else:
+                skipped += 1
+        except Exception as e:
+            skipped += 1
+            continue
+    
+    result_text = f"""
+**📢 Global Cast Completed**
+
+✅ **Success:** `{success}` groups
+❌ **Failed:** `{failed}` groups
+⏭️ **Skipped:** `{skipped}` (users/channels)
+
+**Message:** `{message_text[:50]}...`
+    """
+    await progress_msg.edit(result_text)
 
 
 @Client.on_message(filters.command("gucast", prefixes=PREFIXES))
 async def cmd_gucast(c: Client, m: Message):
-    """Global user cast"""
+    """Global user cast to all users"""
     if m.from_user.id != (await c.get_me()).id:
         return
     
@@ -1272,7 +1301,149 @@ async def cmd_gucast(c: Client, m: Message):
     if len(args) < 2:
         return await m.reply("Usage: `.gucast <message>`")
     
-    await m.reply(f"📢 Global user cast initiated (placeholder)")
+    message_text = args[1]
+    success = 0
+    failed = 0
+    skipped = 0
+    
+    progress_msg = await m.reply("📢 **Starting Global User Cast...**\n\nPlease wait...")
+    
+    async for dialog in c.get_dialogs():
+        try:
+            # Only send to private chats (users)
+            if dialog.chat.type == "private":
+                try:
+                    await c.send_message(dialog.chat.id, message_text)
+                    success += 1
+                    await asyncio.sleep(0.5)  # Small delay to avoid flooding
+                except Exception as e:
+                    failed += 1
+                    logger.error(f"Failed to send to {dialog.chat.first_name}: {e}")
+            else:
+                skipped += 1
+        except Exception as e:
+            skipped += 1
+            continue
+    
+    result_text = f"""
+**📢 Global User Cast Completed**
+
+✅ **Success:** `{success}` users
+❌ **Failed:** `{failed}` users
+⏭️ **Skipped:** `{skipped}` (groups/channels)
+
+**Message:** `{message_text[:50]}...`
+    """
+    await progress_msg.edit(result_text)
+
+
+@Client.on_message(filters.command("analyze", prefixes=PREFIXES))
+async def cmd_analyze(c: Client, m: Message):
+    """Analyze current group - get detailed information about the group"""
+    if m.from_user.id != (await c.get_me()).id:
+        return
+    
+    # If reply to a message, analyze that chat, otherwise current chat
+    chat_id = m.chat.id
+    if m.reply_to_message:
+        chat_id = m.reply_to_message.chat.id
+    
+    try:
+        chat = await c.get_chat(chat_id)
+        
+        # Get members count
+        members_count = chat.members_count if hasattr(chat, 'members_count') else 'N/A'
+        
+        # Get administrators
+        admins = []
+        admin_count = 0
+        try:
+            async for admin in c.get_chat_administrators(chat_id):
+                admins.append(admin.user.first_name)
+                admin_count += 1
+        except:
+            admins = ["Unable to fetch"]
+        
+        # Get recent activity (last 100 messages stats)
+        total_messages = 0
+        text_messages = 0
+        media_messages = 0
+        unique_users = set()
+        
+        async for msg in c.get_chat_history(chat_id, limit=100):
+            total_messages += 1
+            if msg.text:
+                text_messages += 1
+            if msg.photo or msg.video or msg.document:
+                media_messages += 1
+            if msg.from_user:
+                unique_users.add(msg.from_user.id)
+        
+        # Group info text
+        analysis_text = f"""
+**🔍 Group Analysis Report**
+
+**📋 Basic Info:**
+• **Name:** `{chat.title}`
+• **ID:** `{chat.id}`
+• **Type:** `{chat.type}`
+• **Members:** `{members_count}`
+• **Administrators:** `{admin_count}`
+• **Description:** `{chat.description[:100] if chat.description else 'No description'}`
+
+**👥 Admin List:**
+{', '.join(admins[:10])}{'...' if len(admins) > 10 else ''}
+
+**📊 Recent Activity (Last 100 Messages):**
+• **Total Messages:** `{total_messages}`
+• **Text Messages:** `{text_messages}`
+• **Media Messages:** `{media_messages}`
+• **Unique Users:** `{len(unique_users)}`
+
+**⚙️ Settings:**
+• **Is Verified:** `{chat.is_verified}`
+• **Is Scam:** `{chat.is_scam}`
+• **Has Protected Content:** `{chat.has_protected_content}`
+• **Invite Link:** `{chat.invite_link or 'None'}`
+
+**📈 Statistics:**
+• **Active Users Ratio:** `{(len(unique_users)/100*100):.1f}%` (of last 100 msgs)
+• **Media Ratio:** `{(media_messages/total_messages*100) if total_messages > 0 else 0:.1f}%`
+        """
+        
+        await m.reply(analysis_text)
+        
+        # Optional: Send detailed JSON data as file
+        import json
+        from datetime import datetime
+        
+        detailed_data = {
+            "chat_id": chat.id,
+            "title": chat.title,
+            "type": chat.type,
+            "members_count": members_count,
+            "description": chat.description,
+            "admins": admins,
+            "is_verified": chat.is_verified,
+            "is_scam": chat.is_scam,
+            "invite_link": chat.invite_link,
+            "analyzed_at": datetime.now().isoformat()
+        }
+        
+        with open(f"group_analysis_{chat.id}.json", "w") as f:
+            json.dump(detailed_data, f, indent=2)
+        
+        await c.send_document(
+            chat_id=m.chat.id,
+            document=f"group_analysis_{chat.id}.json",
+            caption="📄 Detailed group analysis data"
+        )
+        
+        # Clean up file
+        os.remove(f"group_analysis_{chat.id}.json")
+        
+    except Exception as e:
+        await m.reply(f"❌ Error analyzing group: {e}")
 
 
 @Client.on_message(filters.command("inspect", prefixes=PREFIXES))
