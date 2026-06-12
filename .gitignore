@@ -1,1 +1,57 @@
-Nothing needs to be added to the .gitignore file based on the provided file changes. The deletion of 'generate_session.py' does not require any new ignore rules, as it's a standard Python source file that shouldn't be ignored. The current .gitignore content is empty, so there are no existing rules to preserve or modify.
+```
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# Environment files
+.env
+.env.local
+*.env.*
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+.coverage
+coverage/
+htmlcov/
+
+# Build artifacts
+dist/
+build/
+target/
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.so
+*.a
+
+# Cache directories
+.mypy_cache/
+.pytest_cache/
+.gradle/
+```
