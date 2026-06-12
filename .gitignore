@@ -1,1 +1,14 @@
-Nothing should be ignored based on the provided file changes, as they consist only of source code and documentation files (.md, .py).
+```
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Logs
+*.log
+bot.log
+
+# Environment files
+.env
+.env.local
+.env.*
+```
