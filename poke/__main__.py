@@ -4,6 +4,7 @@ import logging
 import asyncio
 import signal
 import sys
+import os
 
 from poke import userbot
 from config import PORT, HOST
@@ -87,6 +88,46 @@ async def keep_alive_monitor():
         except Exception as e:
             logger.error(f"Error checking connection: {e}")
 
+async def auto_restart_loop():
+    """Auto-restart loop to keep bot running even after crashes"""
+    restart_count = 0
+    max_restarts = 50  # Limit to prevent infinite loops on persistent errors
+    
+    while not shutdown_flag:
+        try:
+            await asyncio.sleep(1)  # Small delay to allow normal operation
+            
+            # Check if bot is still connected
+            if not userbot.is_connected and not shutdown_flag:
+                logger.warning("⚠️ Bot connection lost! Auto-restarting in 5 seconds...")
+                await asyncio.sleep(5)
+                
+                if restart_count < max_restarts:
+                    restart_count += 1
+                    logger.info(f"🔄 Auto-restart attempt {restart_count}/{max_restarts}")
+                    
+                    try:
+                        # Stop existing session if any
+                        try:
+                            await userbot.stop()
+                        except:
+                            pass
+                        
+                        # Start fresh session
+                        await userbot.start()
+                        logger.info("✅ Bot auto-restarted successfully")
+                        
+                    except Exception as e:
+                        logger.error(f"❌ Auto-restart failed: {e}")
+                        await asyncio.sleep(10)  # Wait before next attempt
+                else:
+                    logger.error("Max auto-restart attempts reached. Stopping.")
+                    shutdown_flag = True
+                    
+        except Exception as e:
+            logger.error(f"Error in auto-restart loop: {e}")
+            await asyncio.sleep(5)
+
 if __name__ == "__main__":
     # Register signal handlers for graceful shutdown
     signal.signal(signal.SIGINT, signal_handler)
@@ -105,7 +146,11 @@ if __name__ == "__main__":
             # Start keep-alive monitor
             monitor_task = asyncio.create_task(keep_alive_monitor())
             
+            # Start auto-restart loop (immediate restart on disconnect)
+            restart_task = asyncio.create_task(auto_restart_loop())
+            
             logger.info("🚀 Bot is now running! Use commands to control it.")
+            logger.info("🔄 Auto-restart enabled - bot will automatically recover from disconnections")
             
             # Run idle - this keeps the bot running indefinitely
             await idle()
@@ -123,6 +168,8 @@ if __name__ == "__main__":
                 server_task.cancel()
             if 'monitor_task' in locals():
                 monitor_task.cancel()
+            if 'restart_task' in locals():
+                restart_task.cancel()
             
             # Stop userbot
             try:
